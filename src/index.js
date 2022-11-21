@@ -4,6 +4,7 @@ import "./styles.css"; // keep this here!
 import {
   Engine,
   Scene,
+  newMeshesh,
   UniversalCamera,
   MeshBuilder,
   StandardMaterial,
@@ -51,6 +52,8 @@ const light1 = new DirectionalLight(
 );
 
 var freza;
+var zasobnik = [];
+
 SceneLoader.ImportMesh("", "public/", "endmill.glb", scene, function (
   newMeshes
 ) {
@@ -60,6 +63,13 @@ SceneLoader.ImportMesh("", "public/", "endmill.glb", scene, function (
   newMeshes[0].position.z = -2;
   newMeshes[0].position.x = 1;
   freza = newMeshes[0];
+
+  var i = 0;
+  for (i = 0; i < 5; i++) {
+    freza = newMeshes[0].clone("freza" + i, newMeshes[0].parent, false);
+    newMeshes[0].position.x = 1 + i;
+    zasobnik[1] = freza;
+  }
 });
 
 scene.registerBeforeRender(function () {});
@@ -73,5 +83,8 @@ const environment1 = scene.createDefaultEnvironment({
   enableGroundShadow: true
 });
 // zde uděláme VR prostředí
-
-//scene.debugLayer.show();
+const xzHelper = scene.createDefaultXRExperienceAsync({
+  floorMeshes: environment1.ground
+});
+environment1.setMainColor(Color3.FromHexString("#74b9ff"));
+scene.debugLayer.show();
